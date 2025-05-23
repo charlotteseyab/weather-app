@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Weather App</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+    <h1>Weather App</h1>
+
+    <div class="weather-container">
+        <input type="text" id="location-input" placeholder="Enter location">
+        <button id="get-weather-btn">Get Weather</button>
+
+        <div class="unit-toggle">
+            <span id="celsius-unit" class="active">°C</span> / <span id="fahrenheit-unit">°F</span>
+        </div>
+
+        <div id="weather-info">
+            <!-- Weather information will be displayed here -->
+            <p id="feels-like"></p>
+            <p id="humidity"></p>
+            <p id="wind-speed"></p>
+            <p id="sunrise-time"></p>
+            <p id="sunset-time"></p>
+            <p id="wind-direction"></p>
+            <p id="pressure"></p>
+            <p id="visibility"></p>
+            <p id="aqi"></p>
+            <p id="uv-index"></p>
+        </div>
+    </div>
+
+    <div id="loading-indicator">Fetching weather data...</div>
+
+    <div class="forecast-container">
+        <!-- Forecast information will be displayed here -->
+        <h2>5-Day Forecast</h2>
+        <div id="forecast-info" class="forecast-grid">
+            <!-- Forecast items will be added here by JavaScript -->
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+
+</html>
