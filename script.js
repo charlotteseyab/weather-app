@@ -8,12 +8,13 @@ const celsiusUnitSpan = document.getElementById('celsius-unit'); // Get Celsius 
 const fahrenheitUnitSpan = document.getElementById('fahrenheit-unit'); // Get Fahrenheit span
 const loadingIndicator = document.getElementById('loading-indicator'); // Get loading indicator
 const forecastInfoDiv = document.getElementById('forecast-info'); // Get forecast info div
+const hourlyForecastDiv = document.getElementById('hourly-forecast'); // Hourly forecast container
 
 const API_KEY = 'a1941375c55288b59b75ddba5287c3f9'; // Replace with your actual API key
 const BASE_WEATHER_URL = 'https://api.openweathermap.org/data/2.5/weather';
 const BASE_FORECAST_URL = 'https://api.openweathermap.org/data/2.5/forecast';
-const BASE_AQI_URL = 'https://api.openweathermap.org/data/2.5/air_pollution'; // New AQI endpoint
-const BASE_ONE_CALL_URL = 'https://api.openweathermap.org/data/3.0/onecall'; // New One Call API endpoint
+const BASE_AQI_URL = 'https://api.openweathermap.org/data/2.5/air_pollution';
+const BASE_ONE_CALL_URL = 'https://api.openweathermap.org/data/3.0/onecall';
 
 let currentUnits = 'metric'; // Default to metric
 
@@ -119,8 +120,9 @@ async function getWeatherData(location) {
         }
 
         // Display weather and forecast data
-        displayWeather(weatherData, currentUnits, aqiData, oneCallData); // Pass aqiData and oneCallData
+        displayWeather(weatherData, currentUnits, aqiData, oneCallData);
         displayForecast(forecastData, currentUnits);
+        displayHourlyForecast(forecastData, currentUnits);
 
     } catch (error) {
         console.error('Error fetching weather data:', error);
@@ -329,6 +331,51 @@ function displayForecast(data, units) {
 
     } else {
         console.error('No forecast data available.');
+    }
+}
+
+function displayHourlyForecast(data, units) {
+    // Clear previous hourly forecast
+    hourlyForecastDiv.innerHTML = '';
+
+    if (data.list) {
+        // Display forecast for the next 24-48 hours (or a reasonable number of items)
+        const now = new Date().getTime();
+        const hourlyItemsToShow = 16; // Display approximately 48 hours (16 * 3 hours)
+
+        let displayedCount = 0;
+        for (const item of data.list) {
+            if (displayedCount >= hourlyItemsToShow) break; // Stop after displaying enough items
+
+            const forecastTimestamp = item.dt * 1000;
+
+            // Only display future or very recent hourly entries
+            if (forecastTimestamp >= now - (60 * 60 * 1000)) { // Include entries from the last hour
+                const date = new Date(forecastTimestamp);
+                const time = date.toLocaleTimeString([], { hour: 'numeric', minute: '2-digit' });
+                const temperature = item.main.temp;
+                const weatherDescription = item.weather[0].description;
+                const weatherIconCode = item.weather[0].icon;
+                const weatherIconUrl = `https://openweathermap.org/img/w/${weatherIconCode}.png`;
+
+                const tempUnitSymbol = units === 'metric' ? '°C' : '°F';
+
+                const hourlyItemDiv = document.createElement('div');
+                hourlyItemDiv.classList.add('hourly-forecast-item');
+
+                hourlyItemDiv.innerHTML = `
+                     <p>${time}</p>
+                     <img src="${weatherIconUrl}" alt="${weatherDescription}">
+                     <p>${temperature}${tempUnitSymbol}</p>
+                 `;
+
+                hourlyForecastDiv.appendChild(hourlyItemDiv);
+                displayedCount++;
+            }
+        }
+
+    } else {
+        console.error('No hourly forecast data available.');
     }
 }
 

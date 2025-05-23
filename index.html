@@ -4,12 +4,12 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Weather App</title>
+    <title>AriesWeatherPro</title>
     <link rel="stylesheet" href="style.css">
 </head>
 
 <body>
-    <h1>Weather App</h1>
+    <h1>AriesWeatherPro</h1>
 
     <div class="weather-container">
         <input type="text" id="location-input" placeholder="Enter location">
@@ -35,6 +35,14 @@
     </div>
 
     <div id="loading-indicator">Fetching weather data...</div>
+
+    <!-- Hourly Forecast Section -->
+    <div class="hourly-forecast-container">
+        <h2>Hourly Forecast</h2>
+        <div id="hourly-forecast" class="hourly-forecast-scroll">
+            <!-- Hourly forecast items will be added here by JavaScript -->
+        </div>
+    </div>
 
     <div class="forecast-container">
         <!-- Forecast information will be displayed here -->
